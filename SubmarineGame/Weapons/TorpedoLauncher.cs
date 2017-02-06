@@ -15,10 +15,10 @@ namespace Model
 {
     class TorpedoLauncher
     {
-        float speed = 0.2f;
         System.Collections.Generic.List<Torpedo> torpedos = new System.Collections.Generic.List<Torpedo>();
-        Activator launchActivator = new Activator(0);
+        Activator launchActivator = new Activator();
         
+        float speed = 0.2f;
         Color color = Color.Yellow;
         float size = 0.01f;
         int damage = 10;

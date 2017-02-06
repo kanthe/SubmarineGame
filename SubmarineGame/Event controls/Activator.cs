@@ -15,54 +15,59 @@ namespace Model
     class Activator
     {
         Timer timer;
-        float resetTime;
+        Timer reloadTimer;
         bool buttonPrevPressed = false;
-        bool reachedResetTime = false;
-        bool activate = false;
-        bool prevActivate = false;
+        bool active = false;
+        bool prevActive = false;
 
-        public Activator(float resetTime)
+        public Timer Timer
         {
-            this.resetTime = resetTime;
-            timer = new Timer(resetTime);
+            get { return timer; }
+            set { timer = value; }
         }
 
-        public Timer getTimer()
+        public Activator(Timer timer = null, Timer reloadTimer = null)
         {
-            return timer;
-        }
-
-        public bool getActive()
-        {
-            return buttonPrevPressed;
-        }
-
-        public bool getReachedResetTime()
-        {
-            return reachedResetTime;
+            this.timer = timer;
+            this.reloadTimer = reloadTimer;
         }
 
         public bool activeOnHold(bool buttonPressed, float deltaTime)
         {
-            reachedResetTime = timer.runTimer(deltaTime);
+            bool reachedResetTime = timer.runTimer(deltaTime);
 
             if (buttonPressed && !buttonPrevPressed && !reachedResetTime)
             {
-                activate = true;
+                active = true;
             }
             else if (buttonPressed && buttonPrevPressed)
             {
-                activate = true;
+                active = true;
             }
             else
             {
                 timer.resetTimer();
-                activate = false;
+                active = false;
             }
 
             buttonPrevPressed = buttonPressed;
 
-            return activate;
+            return active;
+        }
+
+        public bool activeOneTimeStep(bool buttonPressed)
+        {
+            if (buttonPressed && !buttonPrevPressed)
+            {
+                active = true;
+            }
+            else
+            {
+                active = false;
+            }
+            buttonPrevPressed = buttonPressed;
+
+            return active;
         }
 
         public bool activeOnRelease(bool buttonPressed)
@@ -70,64 +75,84 @@ namespace Model
 
             if (!buttonPressed && buttonPrevPressed)
             {
-                activate = true;
+                active = true;
             }
             else
             {
-                activate = false;
+                active = false;
             }
             buttonPrevPressed = buttonPressed;
 
-            return activate;
+            return active;
+        }
+
+        public bool activeOnTimeSpan(bool buttonPressed, float deltaTime)
+        {
+            bool reachedResetTime = false;
+            bool reachedReloadTime = false;
+
+            if (active && !prevActive)
+            {
+                reachedResetTime = timer.runTimer(deltaTime);
+
+                if(reachedResetTime)
+                {
+                    active = false;
+                    prevActive = true;
+                    timer.resetTimer();
+                }
+            }
+            else if(!active && prevActive)
+            {
+                reachedReloadTime = reloadTimer.runTimer(deltaTime);
+
+                if (reachedReloadTime && !buttonPressed)
+                {
+                    active = false;
+                    prevActive = false;
+                    reloadTimer.resetTimer();
+                }
+            }
+            else if (buttonPressed && !active && !prevActive)
+            {
+                active = true;
+                prevActive = false;
+            }
+            return active;
         }
 
         public bool activeOnInterval(bool buttonPressed, float deltaTime)
         {
-            reachedResetTime = timer.runTimer(deltaTime);
+            bool reachedResetTime = timer.runTimer(deltaTime);
 
             if (buttonPressed && buttonPrevPressed && reachedResetTime)
             {
-                activate = true;
+                active = false;
                 timer.resetTimer();
             }
             else
             {
-                activate = false;
+                active = true;
             }
             buttonPrevPressed = buttonPressed;
 
-            return activate;
-        }
-
-        public bool activeOneTimeStep(bool buttonPressed)
-        {
-
-            if (buttonPressed && !buttonPrevPressed)
-            {
-                activate = true;
-            }
-            else
-            {
-                activate = false;
-            }
-            buttonPrevPressed = buttonPressed;
-
-            return activate;
+            return active;
         }
 
         public bool activateDeactivateOnRelease(bool buttonPressed)
         {
-
-            if (buttonPrevPressed == buttonPressed) { activate = prevActivate; }
-            else if (!buttonPrevPressed) { activate = !prevActivate; }
-            else { activate = prevActivate; }
-
-            buttonPrevPressed = buttonPressed;
-
-            buttonPrevPressed = buttonPressed;
-            prevActivate = activate;
-
-            return activate;
+            if(activeOneTimeStep(buttonPressed))
+            {
+                if(prevActive)
+                {
+                    prevActive = false;
+                }
+                else
+                {
+                    prevActive = true;
+                }
+            }
+            return prevActive;
         }
     }
 }

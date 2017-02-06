@@ -16,17 +16,17 @@ namespace Model
     class DropBombLauncher
     {
         System.Collections.Generic.List<DropBomb> dropBombs = new System.Collections.Generic.List<DropBomb>();
-        Activator launchActivator = new Activator(0);
+        Activator launchActivator = new Activator();
         
         Color color = Color.Red;
         float size = 0.02f;
         int damage = 20;
 
-        internal System.Collections.Generic.List<DropBomb> DropBombs
-            {
-                get { return dropBombs; }
-                set { dropBombs = value; }
-            }
+        public System.Collections.Generic.List<DropBomb> DropBombs
+        {
+            get { return dropBombs; }
+            set { dropBombs = value; }
+        }
 
         public int Damage
         {

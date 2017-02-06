@@ -22,14 +22,18 @@ namespace View
         GraphicsDevice device;
         ContentManager content;
         Camera camera;
+        MapL1 mapModel;
         Texture2D groundTexture;
+        EnemyView enemyView;
 
-        public MapView(MapL1 mapModel, int scale, GraphicsDevice device, ContentManager content)
+        public MapView(MapL1 mapModel, int scale, GraphicsDevice device, ContentManager content, Camera camera)
         {
             this.scale = scale;
             this.device = device;
             this.content = content;
-            camera = GameView.camera;
+            this.camera = camera;
+            this.mapModel = mapModel;
+            enemyView = new EnemyView(scale, device, content, camera);
 
             groundTexture = new Texture2D(device, 1, 1);
             groundTexture.SetData(new[] { Color.White });
@@ -37,7 +41,7 @@ namespace View
 
         // MAP
 
-        public void drawMap(SpriteBatch spriteBatch, MapL1 mapModel)
+        public void drawMap(SpriteBatch spriteBatch)
         {
 
             for (int i = 0; i < mapModel.Ground.Length; i++)
@@ -51,6 +55,13 @@ namespace View
             spriteBatch.Draw(groundTexture, new Rectangle((int)endPos.X, (int)endPos.Y, 10, (int)endPos.Y + scale), Color.Brown);
             Vector2 startPos = camera.modelPositionToViewPosition(new Vector2(0, 0));
             spriteBatch.Draw(groundTexture, new Rectangle((int)startPos.X, (int)startPos.Y, 10, (int)startPos.Y), Color.Brown);
+        }
+
+        public void drawEnemies(SpriteBatch spriteBatch)
+        {
+            foreach (IEnemy enemy in mapModel.Enemies) {
+                enemyView.draw(enemy, spriteBatch);
+            }
         }
     }
 }

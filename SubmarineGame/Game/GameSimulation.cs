@@ -56,7 +56,6 @@ namespace Model
         public MapL1 Map
         {
             get { return map; }
-
             set { map = value; }
         }
 
@@ -88,6 +87,10 @@ namespace Model
             {
                 dropBomb.Position = movement.forward(dropBomb.Position, dropBomb.Speed, deltaTime);
                 dropBomb.Position = movement.down(dropBomb.Position, Movement.GRAVITY, deltaTime);
+            }
+            for (int i = map.Enemies.Count - 1; i >= 0; i--)
+            {
+                weaponsHitEnemy(map.Enemies[i]);
             }
         }
 
@@ -123,6 +126,52 @@ namespace Model
         public void playerLaunchElectroBeam(bool electroButtonPressed)
         {
             player.ElectroLauncher.LaunchElectroBeam(player.Position, electroButtonPressed, deltaTime);
+        }
+        public void weaponsHitEnemy(IEnemy enemy)
+        {
+            for (int i = player.TorpedoLauncher.Torpedos.Count - 1; i >= 0; i--)
+            {
+                Torpedo torpedo = player.TorpedoLauncher.Torpedos[i];
+
+                if (Mathematics.IsInsideCircle(torpedo.Position, torpedo.Size, enemy.Position, enemy.Size)) 
+                {
+                    enemy.isHit(torpedo.Damage);
+                    player.TorpedoLauncher.Torpedos.Remove(torpedo);
+                }
+            }
+            for (int i = player.DropBombLauncher.DropBombs.Count - 1; i >= 0; i--)
+            {
+                DropBomb dropBomb = player.DropBombLauncher.DropBombs[i];
+
+                if (Mathematics.IsInsideCircle(dropBomb.Position, dropBomb.Size, enemy.Position, enemy.Size))
+                {
+                    enemy.isHit(dropBomb.Damage);
+                    player.DropBombLauncher.DropBombs.Remove(dropBomb);
+                }
+            }
+            ElectroBeam eBeam = player.ElectroLauncher.ElectroBeam;
+
+            if (eBeam != null && Mathematics.IsInsideCircle(eBeam.Position, eBeam.Length, enemy.Position, enemy.Size * 5))
+            {
+                bool reachedResetTime = enemy.DamageTimer.runTimer(deltaTime);
+
+                if(reachedResetTime)
+                {
+                    enemy.isHit(eBeam.Damage);
+                    enemy.DamageTimer.resetTimer();
+                }
+                else
+                {
+
+                    enemy.DamageTimer.resetTimer();
+                }
+            }
+
+            if (enemy.HitPoints <= 0)
+            {
+                map.Enemies.Remove(enemy);
+            }
+            eBeam = null;
         }
 
         // ADVANCE LEVEL

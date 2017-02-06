@@ -16,67 +16,41 @@ namespace Model
     class ElectroLauncher
     {
         ElectroBeam electroBeam;
-        Activator launchActivator = new Activator(0);
+        Activator activator;
         Timer launchTimer = new Timer(0.5f);
-        bool beamLaunched = false;
+        Timer reloadTimer = new Timer(1.0f);
         
         Color color = Color.Blue;
         float width = 0.01f;
         float length = 0.1f;
-
-        public float Width
-        {
-            get { return width; }
-            set { width = value; }
-        }
-
-        public float Length
-        {
-            get { return length; }
-            set { length = value; }
-        }
-
         int damage = 30;
 
         public ElectroBeam ElectroBeam
         {
-            get { return electroBeam; }
+            get { return electroBeam;  } 
             set { electroBeam = value; }
         }
 
-        public int Damage
+        public Timer LaunchTimer
         {
-            get { return damage; }
-            set { damage = value; }
-        }
-
-        public Color Color
-        {
-            get { return color; }
-            set { color = value; }
+            get { return launchTimer; }
+            set { launchTimer = value; }
         }
 
         public ElectroLauncher()
         {
-            
+            activator = new Activator(launchTimer, reloadTimer);
         }
 
         public void LaunchElectroBeam(Vector2 position, bool electroButtonPressed, float deltaTime)
         {
-            if (launchActivator.activeOneTimeStep(electroButtonPressed))
-            {
-                beamLaunched = true;
-                electroBeam = new ElectroBeam(position, color, width, length, damage);
-            }
-            if (beamLaunched && !launchTimer.runTimer(deltaTime))
+            if (activator.activeOnTimeSpan(electroButtonPressed, deltaTime))
             {
                 electroBeam = new ElectroBeam(position, color, width, length, damage);
             }
             else
             {
                 electroBeam = null;
-                beamLaunched = false;
-                launchTimer.resetTimer();
             }
         }
     }

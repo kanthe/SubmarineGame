@@ -40,7 +40,7 @@ namespace View
             smokeViewList = new System.Collections.Generic.List<SmokeView>(); // List of smoke
             smokeSystemList = new System.Collections.Generic.List<SmokeSystem>(); // List of smoke
             // SOUNDS
-            soundActivator = new Activator(0);
+            soundActivator = new Activator();
         }
 
         /// <summary>

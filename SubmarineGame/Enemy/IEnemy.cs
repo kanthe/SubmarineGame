@@ -12,8 +12,6 @@ using Microsoft.Xna.Framework;
 
 namespace Model
 {
-    
-
     interface IEnemy
     {
         Vector2 Position { get; set; }
@@ -23,6 +21,7 @@ namespace Model
         int HitPoints { get; set; }
         int MaxHitPoints { get; set; }
         Movement Movement { get; set; }
+        Timer DamageTimer { get; set; }
 
         void Fire(System.Collections.Generic.List<Torpedo> enemyBullets, float deltaTime);
         /// <summary>
@@ -32,3 +31,4 @@ namespace Model
         void isHit(int damage);
     }
 }
+

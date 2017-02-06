@@ -10,6 +10,8 @@
 // Log:2016-06-24 Created the file. Robin Kanthe
 /*******************************************************************************************************/
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+
 namespace Model
 {
     class MapL1
@@ -18,6 +20,7 @@ namespace Model
         public static readonly int NO_GROUND_ELEMENTS = 1000;
         Player player;
         Vector2[] ground = new Vector2[NO_GROUND_ELEMENTS];
+        List<IEnemy> enemies = new List<IEnemy>();
 
         public Vector2[] Ground
         {
@@ -25,9 +28,17 @@ namespace Model
             set { ground = value; }
         }
 
+        public List<IEnemy> Enemies
+        {
+            get { return enemies; }
+            set { enemies = value; }
+        }
+
         public MapL1(Player player)
         {
             this.player = player;
+            enemies.Add(new EnemyClassOne(new Vector2(1.0f, 0.5f)));
+            enemies.Add(new EnemyClassOne(new Vector2(1.0f, 0.3f)));
             makeGround();
         }
 

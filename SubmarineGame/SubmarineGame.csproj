@@ -38,6 +38,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enemy\EnemyClassOne.cs" />
+    <Compile Include="Enemy\EnemyView.cs" />
     <Compile Include="Enemy\IEnemy.cs" />
     <Compile Include="Event controls\Activator.cs" />
     <Compile Include="Event controls\EventListener.cs" />

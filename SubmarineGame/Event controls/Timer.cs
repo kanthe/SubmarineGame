@@ -15,7 +15,7 @@ namespace Model
     class Timer
     {
         float resetTime; // Time timer is set to
-        float timer = 0; // Time since last run
+        float time = 0; // Time since last run
 
         // CONSTRUCTOR
         public Timer(float resetTime)
@@ -25,7 +25,7 @@ namespace Model
 
         // GET
         public float getResetTime() { return resetTime; }
-        public float getTimer() { return timer; }
+        public float getTime() { return time; }
 
         // SET
         public void setTimer(float resetTime)
@@ -35,7 +35,7 @@ namespace Model
         // RESET
         public void resetTimer()
         {
-            timer = 0;
+            time = 0;
         }
 
         // RUN
@@ -43,9 +43,9 @@ namespace Model
         public bool runTimer(float deltaTime)
         {
             bool reachedResetTime = false;
-            timer += deltaTime;
+            time += deltaTime;
 
-            if (timer > resetTime)
+            if (time > resetTime)
             {
                 reachedResetTime = true;
             }
@@ -55,7 +55,7 @@ namespace Model
         // REVERSE ONE TIME STEP
         public void reverseOneTimeStep(float deltaTime)
         {
-            timer -= deltaTime;
+            time -= deltaTime;
         }
     }
 }

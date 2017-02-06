@@ -23,7 +23,7 @@ namespace Controller
     {
         GameSimulation gameSimulation; // Model representation of the game
         // EventListener eventListener;  // Drawing things and/or playing sounds in respons to events
-        Activator pauseActivator = new Activator(0); // 
+        Activator pauseActivator = new Activator(); // 
         EventListener eventListener;
 
         public GameController(GameSimulation gameSimulation, EventListener eventListener)

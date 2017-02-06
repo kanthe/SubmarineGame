@@ -50,7 +50,7 @@ namespace View
             electroView = new ElectroView(scale, device, content, camera);
             dropBombView = new DropBombView(scale, device, content, camera);
             // enemyView = new EnemyView(scale, device, content);
-            mapView = new MapView(gameSimulation.Map, scale, device, content);
+            mapView = new MapView(gameSimulation.Map, scale, device, content, camera);
         }
 
         //DRAWS GAME
@@ -68,7 +68,7 @@ namespace View
             // MAP
 
             // MapView has methods to draw most game elements
-            mapView.drawMap(spriteBatch, gameSimulation.Map);
+            mapView.drawMap(spriteBatch);
 
             // ---------
             // PLAYER
@@ -103,7 +103,7 @@ namespace View
 
             // Draws enemies
             // System.Collections.Generic.List<EnemyTemplate> enemies = gameSimulation.getMap().getEnemies();
-            // enemyView.DrawEnemies(enemies, spriteBatch);
+            mapView.drawEnemies(spriteBatch);
 
             // EXPLOSIONS AND SMOKE
 
