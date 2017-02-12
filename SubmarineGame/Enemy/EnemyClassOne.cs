@@ -5,11 +5,11 @@ namespace Model
     class EnemyClassOne : IEnemy
     {
         Vector2 position;
-        float speed = -0.1f;
+        float speed = 0.05f;
         Color color = Color.Red;
         float size = 0.02f;
-        int hitPoints = 100;
-        int maxHitPoints = 100;
+        int hitPoints = 1000;
+        int maxHitPoints = 1000;
         Movement movement = new Movement();
         Timer damageTimer = new Timer(0.5f);
 

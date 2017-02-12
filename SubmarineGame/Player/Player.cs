@@ -18,7 +18,7 @@ namespace Model
         Vector2 position;
         float speed = 0.1f;
         Color color = Color.Black;
-        float size = 0.05f;
+        float size = 0.04f;
         TorpedoLauncher torpedoLauncher = new TorpedoLauncher();
         DropBombLauncher dropBombLauncher = new DropBombLauncher();
         ElectroLauncher electroLauncher = new ElectroLauncher();

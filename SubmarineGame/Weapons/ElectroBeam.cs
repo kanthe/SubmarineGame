@@ -19,19 +19,19 @@ namespace Model
         float speed;
         Color color;
         int damage;
+        float height;
         float width;
-        float length;
+
+        public float Height
+        {
+            get { return height; }
+            set { height = value; }
+        }
 
         public float Width
         {
             get { return width; }
             set { width = value; }
-        }
-
-        public float Length
-        {
-            get { return length; }
-            set { length = value; }
         }
 
         public int Damage
@@ -62,8 +62,8 @@ namespace Model
         {
             this.position = position;
             this.color = color;
-            this.width = width;
-            this.length = height;
+            this.height = width;
+            this.width = height;
             this.damage = damage;
         }
     }

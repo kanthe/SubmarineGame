@@ -18,7 +18,7 @@ namespace Model
         ElectroBeam electroBeam;
         Activator activator;
         Timer launchTimer = new Timer(0.5f);
-        Timer reloadTimer = new Timer(1.0f);
+        Timer reloadTimer = new Timer(0.25f);
         
         Color color = Color.Blue;
         float width = 0.01f;

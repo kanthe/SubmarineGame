@@ -40,7 +40,7 @@ namespace View
             int playerSize = camera.scaleObject(player.Size);
 
             spriteBatch.Draw(playerTexture,
-                new Rectangle((int)playerViewPosition.X - 40, (int)playerViewPosition.Y, playerSize, playerSize/2),
+                new Rectangle((int)playerViewPosition.X - playerSize / 2, (int)playerViewPosition.Y - playerSize / 2, playerSize, playerSize),
                 Color.Green
                     );
         }

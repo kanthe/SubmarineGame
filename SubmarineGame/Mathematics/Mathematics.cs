@@ -26,6 +26,13 @@ namespace Model
             return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
         }
         /// <summary>
+        /// Returns the absolute value (length) of a length
+        /// </summary>
+        public static float AbsoluteValue(float length)
+        {
+            return (float)Math.Abs(length);
+        }
+        /// <summary>
         /// Calculating the angle from the direction
         /// </summary>
         public static Vector2 AngleToDirection(float angle)
@@ -45,13 +52,26 @@ namespace Model
             return angle;
         }
         /// <summary>
-        /// Determines if Two circles intersect or (if one diameter is set to 0, if something is inside a circle
+        /// Determines if Two circles intersect or (if one diameter is set to 0), if something is inside a circle
         /// </summary>
         public static bool IsInsideCircle(Vector2 positionOfObject, float diameterOfObject, Vector2 positionOfCircle, float diameterOfCircle)
         {
             // positionOfObject = positionOfObject + new Vector2(diameterOfObject / 2, diameterOfObject / 2);
             // positionOfCircle = positionOfCircle + new Vector2(diameterOfCircle / 2, diameterOfCircle / 2);
             return AbsoluteValue(positionOfObject - positionOfCircle) < diameterOfObject / 2 + diameterOfCircle / 2;
+        }
+        /// <summary>
+        /// Determines if a circle intersect or (if one diameter is set to 0), if something is inside a rectangle
+        /// positionOfRectangle is top left corner of the rectangle
+        /// </summary>
+        public static bool IsInsideRectangle(Vector2 positionOfObject, float diameterOfObject, Vector2 positionOfRectangle, float widthOfRectangle, float heightOfRectangle)
+        {
+            bool widthInside = false;
+            bool heightInside = false;
+            widthInside = positionOfObject.X - positionOfRectangle.X < diameterOfObject / 2 + widthOfRectangle && positionOfObject.X - positionOfRectangle.X > diameterOfObject / 2;
+            heightInside = AbsoluteValue(positionOfObject.Y - positionOfRectangle.Y) < diameterOfObject / 2 + heightOfRectangle;
+
+            return widthInside && heightInside;
         }
         /// <summary>
         /// Returns a position inside a circle

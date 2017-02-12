@@ -28,7 +28,7 @@ namespace View
         {
             Vector2 enemyViewPosition = camera.modelPositionToViewPosition(enemy.Position);
             int size = camera.scaleObject(enemy.Size);
-            spriteBatch.Draw(enemyTexture, new Rectangle((int)enemyViewPosition.X, (int)enemyViewPosition.Y, size, size), enemy.Color);
+            spriteBatch.Draw(enemyTexture, new Rectangle((int)enemyViewPosition.X - size / 2, (int)enemyViewPosition.Y - size / 2, size, size), enemy.Color);
         }
 
     }

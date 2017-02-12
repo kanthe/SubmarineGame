@@ -37,11 +37,11 @@ namespace View
         public void DrawElectroBeam(ElectroBeam electroBeam, SpriteBatch spriteBatch)
         {
             Vector2 electroViewPosition = camera.modelPositionToViewPosition(electroBeam.Position);
+            int electroViewHeight = (int)camera.scaleObject(electroBeam.Height);
             int electroViewWidth = (int)camera.scaleObject(electroBeam.Width);
-            int electroViewLength = (int)camera.scaleObject(electroBeam.Length);
 
             spriteBatch.Draw(electroTexture,
-                new Rectangle((int)electroViewPosition.X, (int)electroViewPosition.Y, electroViewLength, electroViewWidth),
+                new Rectangle((int)electroViewPosition.X, (int)electroViewPosition.Y, electroViewWidth, electroViewHeight),
                 electroBeam.Color
                     );
         }

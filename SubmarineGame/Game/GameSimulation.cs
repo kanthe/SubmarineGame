@@ -78,7 +78,12 @@ namespace Model
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // GRAVITY MOVEMENT
             player.Position = movement.down(player.Position, Movement.GRAVITY / 2, deltaTime);
-
+            // ENEMIES MOVEMENT
+            for (int i = map.Enemies.Count - 1; i >= 0; i--)
+            {
+                moveEnemy(map.Enemies[i]);
+            }
+            // PLAYERS WEAPONS
             foreach (Torpedo torpedo in player.TorpedoLauncher.Torpedos)
             {
                 torpedo.Position = movement.forward(torpedo.Position, torpedo.Speed, deltaTime);
@@ -88,6 +93,7 @@ namespace Model
                 dropBomb.Position = movement.forward(dropBomb.Position, dropBomb.Speed, deltaTime);
                 dropBomb.Position = movement.down(dropBomb.Position, Movement.GRAVITY, deltaTime);
             }
+            // WEAPONS HIT ENEMIES 
             for (int i = map.Enemies.Count - 1; i >= 0; i--)
             {
                 weaponsHitEnemy(map.Enemies[i]);
@@ -113,6 +119,13 @@ namespace Model
             player.Position = movement.down(player.Position, player.Speed, deltaTime);
         }
 
+        // ENEMIES MOVE
+
+        public void moveEnemy(IEnemy enemy)
+        {
+            enemy.Position = movement.backward(enemy.Position, enemy.Speed, deltaTime);
+        }
+
         // WEAPONS
 
         public void playerLaunchTorpedo(bool torpedoButtonPressed)
@@ -125,7 +138,7 @@ namespace Model
         }
         public void playerLaunchElectroBeam(bool electroButtonPressed)
         {
-            player.ElectroLauncher.LaunchElectroBeam(player.Position, electroButtonPressed, deltaTime);
+            player.ElectroLauncher.LaunchElectroBeam(player.Position + new Vector2(player.Size / 2, 0), electroButtonPressed, deltaTime);
         }
         public void weaponsHitEnemy(IEnemy enemy)
         {
@@ -151,18 +164,14 @@ namespace Model
             }
             ElectroBeam eBeam = player.ElectroLauncher.ElectroBeam;
 
-            if (eBeam != null && Mathematics.IsInsideCircle(eBeam.Position, eBeam.Length, enemy.Position, enemy.Size * 5))
+            if (eBeam != null && Mathematics.IsInsideRectangle(enemy.Position, enemy.Size, eBeam.Position, eBeam.Width, eBeam.Height))
             {
                 bool reachedResetTime = enemy.DamageTimer.runTimer(deltaTime);
+                System.Console.WriteLine(enemy.DamageTimer.getTime());
 
                 if(reachedResetTime)
                 {
                     enemy.isHit(eBeam.Damage);
-                    enemy.DamageTimer.resetTimer();
-                }
-                else
-                {
-
                     enemy.DamageTimer.resetTimer();
                 }
             }
