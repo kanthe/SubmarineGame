@@ -19,10 +19,41 @@ namespace Model
         float speed = 0.1f;
         Color color = Color.Black;
         float size = 0.04f;
-        TorpedoLauncher torpedoLauncher = new TorpedoLauncher();
+        int hitPoints = 100;
+        int maxHitPoints = 1000;
+        TorpedoLauncher torpedoLauncher = new TorpedoLauncher(0.2f, Color.Yellow, 0.01f, 10);
         DropBombLauncher dropBombLauncher = new DropBombLauncher();
         ElectroLauncher electroLauncher = new ElectroLauncher();
 
+        public Player(Vector2 position)
+        {
+            this.position = position;
+        }
+        public void IsHit(int damage)
+        {
+            hitPoints -= damage;
+
+            if (color == Color.Green)
+            {
+                color = Color.Yellow;
+            }
+            else
+            {
+                color = Color.Green;
+            }
+        }
+        public bool IsGameOver()
+        {
+            bool gameOver = false;
+
+            if(hitPoints <= 0)
+            {
+                gameOver = true;
+            }
+            return gameOver;
+        }
+
+        #region Properties
 
         public TorpedoLauncher TorpedoLauncher
         {
@@ -66,9 +97,18 @@ namespace Model
             set { position = value; }
         }
 
-        public Player(Vector2 position)
+        public int HitPoints
         {
-            this.position = position;
+            get { return hitPoints; }
+            set { hitPoints = value; }
         }
+
+        public int MaxHitPoints
+        {
+            get { return maxHitPoints; }
+            set { maxHitPoints = value; }
+        }
+
+        #endregion
     }
 }

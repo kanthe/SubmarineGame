@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace Model
 {
@@ -8,11 +9,46 @@ namespace Model
         float speed = 0.05f;
         Color color = Color.Red;
         float size = 0.02f;
+        int crashDamage = 50;
         int hitPoints = 1000;
         int maxHitPoints = 1000;
         Movement movement = new Movement();
-        Timer damageTimer = new Timer(0.5f);
+        Timer damageTimer = new Timer(2.0f);
+        TorpedoLauncher torpedoLauncher = new TorpedoLauncher(0.2f, Color.Red, 0.01f, 10, 0.5f);
 
+        public EnemyClassOne(Vector2 position)
+        {
+            this.position = position;
+            torpedoLauncher = new TorpedoLauncher(0.2f, Color.Red, 0.01f, 10, 0.5f);
+        }
+
+        public void Fire(System.Collections.Generic.List<Torpedo> enemyBullets, float deltaTime)
+        {
+
+        }
+        /// <summary>
+        /// ENEMY DAMAGED/DESTROYED
+        /// </summary>
+        public void crash()
+        {
+
+        }
+
+        public void isHit(int damage)
+        {
+            hitPoints -= damage;
+
+            if (color == Color.Red)
+            {
+                color = Color.Purple;
+            }
+            else
+            {
+                color = Color.Red;
+            }
+        }
+
+        #region Properties
         public Vector2 Position
         {
             get { return position; }
@@ -57,46 +93,30 @@ namespace Model
 
         public Timer DamageTimer
         {
+            get { return damageTimer; }
+            set { damageTimer = value; }
+        }
+
+        public TorpedoLauncher TorpedoLauncher
+        {
+            get { return torpedoLauncher; }
+            set { torpedoLauncher = value; }
+        }
+
+        public int CrashDamage
+        {
             get
             {
-                return damageTimer;
+                return crashDamage;
             }
 
             set
             {
-                damageTimer = value;
+                crashDamage = value;
             }
         }
 
-        public EnemyClassOne (Vector2 position)
-        {
-            this.position = position;
-        }
+        #endregion
 
-        public void Fire(System.Collections.Generic.List<Torpedo> enemyBullets, float deltaTime)
-        {
-
-        }
-        /// <summary>
-        /// ENEMY DAMAGED/DESTROYED
-        /// </summary>
-        public void crash()
-        {
-            
-        }
-
-        public void isHit(int damage)
-        {
-            hitPoints -= damage;
-
-            if (color == Color.Red)
-            {
-                color = Color.Purple;
-            }
-            else
-            {
-                color = Color.Red;
-            }
-        }
     }
 }

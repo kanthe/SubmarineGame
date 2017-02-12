@@ -76,6 +76,25 @@ namespace View
             return scaledObject;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public Vector2 putPositionInCentre(Vector2 viewPosition, int diameter)
+        {
+            Vector2 centreViewPosition = viewPosition - new Vector2(diameter / 2, diameter / 2);
+
+            return centreViewPosition;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector2 putPositionInCentre(Vector2 viewPosition, int width, int height)
+        {
+            Vector2 centreViewPosition = viewPosition - new Vector2(width / 2, height / 2);
+
+            return centreViewPosition;
+        }
+
+        /// <summary>
         /// Transforming a length in model coordinates to view coordinates
         /// </summary>
         public void zoom(float percent, Vector2 modelPosition)

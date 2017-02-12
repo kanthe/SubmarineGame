@@ -37,10 +37,11 @@ namespace View
         public void DrawTorpedo(Torpedo torpedo, SpriteBatch spriteBatch)
         {
             Vector2 torpedoViewPosition = camera.modelPositionToViewPosition(torpedo.Position);
-            int torpedoViewSize = (int)camera.scaleObject(torpedo.Size);
+            int diameter = (int)camera.scaleObject(torpedo.Size);
+            torpedoViewPosition = camera.putPositionInCentre(torpedoViewPosition, diameter);
 
             spriteBatch.Draw(torpedoTexture,
-                new Rectangle((int)torpedoViewPosition.X, (int)torpedoViewPosition.Y, torpedoViewSize, torpedoViewSize),
+                new Rectangle((int)torpedoViewPosition.X, (int)torpedoViewPosition.Y, diameter, diameter),
                 torpedo.Color
                     );
         }

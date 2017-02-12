@@ -76,13 +76,21 @@ namespace Model
         {
             // The gametime step in seconds
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            // GRAVITY MOVEMENT
+            // PLAYER GRAVITY MOVEMENT
             player.Position = movement.down(player.Position, Movement.GRAVITY / 2, deltaTime);
             // ENEMIES MOVEMENT
             for (int i = map.Enemies.Count - 1; i >= 0; i--)
             {
-                moveEnemy(map.Enemies[i]);
+                IEnemy enemy = map.Enemies[i];
+                moveEnemy(enemy);
+
+                if(didEnemyCrash(enemy))
+                {
+                    player.HitPoints -= map.Enemies[i].CrashDamage;
+                    map.Enemies.Remove(enemy);
+                }
             }
+            // ENEMIES CRASH
             // PLAYERS WEAPONS
             foreach (Torpedo torpedo in player.TorpedoLauncher.Torpedos)
             {
@@ -97,6 +105,16 @@ namespace Model
             for (int i = map.Enemies.Count - 1; i >= 0; i--)
             {
                 weaponsHitEnemy(map.Enemies[i]);
+            }
+            // ENEMIES WEAPONS
+            for (int i = map.Enemies.Count - 1; i >= 0; i--)
+            {
+                launchAndMoveTorpedos(map.Enemies[i]);
+            }
+            
+            if(player.IsGameOver())
+            {
+                player.Color = Color.Black;
             }
         }
 
@@ -124,6 +142,18 @@ namespace Model
         public void moveEnemy(IEnemy enemy)
         {
             enemy.Position = movement.backward(enemy.Position, enemy.Speed, deltaTime);
+        }
+
+        public bool didEnemyCrash(IEnemy enemy)
+        {
+            bool enemyCrash = false;
+
+            if (Mathematics.IsInsideCircle(player.Position, player.Size, enemy.Position, enemy.Size))
+            {
+                enemyCrash = true;
+            }
+
+            return enemyCrash;
         }
 
         // WEAPONS
@@ -167,7 +197,6 @@ namespace Model
             if (eBeam != null && Mathematics.IsInsideRectangle(enemy.Position, enemy.Size, eBeam.Position, eBeam.Width, eBeam.Height))
             {
                 bool reachedResetTime = enemy.DamageTimer.runTimer(deltaTime);
-                System.Console.WriteLine(enemy.DamageTimer.getTime());
 
                 if(reachedResetTime)
                 {
@@ -183,6 +212,40 @@ namespace Model
             eBeam = null;
         }
 
+        public void launchAndMoveTorpedos(IEnemy enemy)
+        {
+            if (enemy.TorpedoLauncher != null)
+            {
+                if (enemy.TorpedoLauncher.Timer.runTimer(deltaTime))
+                {
+                    enemy.TorpedoLauncher.LaunchTorpedo(enemy.Position);
+
+                    enemy.TorpedoLauncher.Timer.resetTimer();
+                }
+                for (int i = enemy.TorpedoLauncher.Torpedos.Count - 1; i >= 0; i--)
+                {
+                    Torpedo torpedo = enemy.TorpedoLauncher.Torpedos[i];
+                    torpedo.Position = movement.backward(torpedo.Position, torpedo.Speed, deltaTime);
+
+                    if(weaponHitPlayer(torpedo.Position, torpedo.Size))
+                    {
+                        player.IsHit(torpedo.Damage);
+                        enemy.TorpedoLauncher.Torpedos.Remove(torpedo);
+                    }
+                }
+            }
+        }
+
+        public bool weaponHitPlayer(Vector2 position, float size)
+        {
+            bool playerIsHit = false;
+
+            if(Mathematics.IsInsideCircle(player.Position, player.Size, position, size))
+            {
+                playerIsHit = true;
+            }
+            return playerIsHit;
+        }
         // ADVANCE LEVEL
 
         public void advanceLevel()

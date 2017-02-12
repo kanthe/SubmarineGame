@@ -17,17 +17,48 @@ namespace Model
     {
         System.Collections.Generic.List<Torpedo> torpedos = new System.Collections.Generic.List<Torpedo>();
         Activator launchActivator = new Activator();
-        
         float speed = 0.2f;
         Color color = Color.Yellow;
         float size = 0.01f;
         int damage = 10;
+        Timer timer;
 
-        internal System.Collections.Generic.List<Torpedo> Torpedos
+        public TorpedoLauncher(float speed, Color color, float size, int damage)
+        {
+            this.speed = speed;
+            this.color = color;
+            this.size = size;
+            this.damage = damage;
+        }
+        public TorpedoLauncher(float speed, Color color, float size, int damage, float interval)
+        {
+            this.speed = speed;
+            this.color = color;
+            this.size = size;
+            this.damage = damage;
+            this.timer = new Timer(interval);
+        }
+
+        public void LaunchTorpedo(Vector2 position, bool torpedoButtonPressed)
+        {
+            if (launchActivator.activeOneTimeStep(torpedoButtonPressed))
             {
-                get { return torpedos; }
-                set { torpedos = value; }
+                torpedos.Add(new Torpedo(position, speed, color, size, damage));
             }
+        }
+
+        public void LaunchTorpedo(Vector2 position)
+        {
+            torpedos.Add(new Torpedo(position, speed, color, size, damage));
+        }
+
+        #region Properties
+
+        public System.Collections.Generic.List<Torpedo> Torpedos
+        {
+            get { return torpedos; }
+            set { torpedos = value; }
+        }
 
         public int Damage
         {
@@ -53,17 +84,13 @@ namespace Model
             set { speed = value; }
         }
 
-        public TorpedoLauncher()
+        internal Timer Timer
         {
-            
+            get { return timer; } 
+            set  { timer = value; }
         }
 
-        public void LaunchTorpedo(Vector2 position, bool torpedoButtonPressed)
-        {
-            if (launchActivator.activeOneTimeStep(torpedoButtonPressed))
-            {
-                torpedos.Add(new Torpedo(position, speed, color, size, damage));
-            }
-        }
+        #endregion
+
     }
 }

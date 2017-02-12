@@ -27,8 +27,10 @@ namespace View
         public void draw(IEnemy enemy, SpriteBatch spriteBatch) 
         {
             Vector2 enemyViewPosition = camera.modelPositionToViewPosition(enemy.Position);
-            int size = camera.scaleObject(enemy.Size);
-            spriteBatch.Draw(enemyTexture, new Rectangle((int)enemyViewPosition.X - size / 2, (int)enemyViewPosition.Y - size / 2, size, size), enemy.Color);
+            int diameter = camera.scaleObject(enemy.Size);
+            enemyViewPosition = camera.putPositionInCentre(enemyViewPosition, diameter);
+
+            spriteBatch.Draw(enemyTexture, new Rectangle((int)enemyViewPosition.X, (int)enemyViewPosition.Y, diameter, diameter), enemy.Color);
         }
 
     }

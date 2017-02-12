@@ -20,8 +20,10 @@ namespace Model
         float Size { get; set; }
         int HitPoints { get; set; }
         int MaxHitPoints { get; set; }
+        int CrashDamage { get; set; }
         Movement Movement { get; set; }
         Timer DamageTimer { get; set; }
+        TorpedoLauncher TorpedoLauncher { get; set; }
 
         void Fire(System.Collections.Generic.List<Torpedo> enemyBullets, float deltaTime);
         /// <summary>

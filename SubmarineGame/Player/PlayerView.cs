@@ -37,11 +37,12 @@ namespace View
         public void DrawPlayer(Player player, SpriteBatch spriteBatch)
         {
             Vector2 playerViewPosition = camera.modelPositionToViewPosition(player.Position);
-            int playerSize = camera.scaleObject(player.Size);
+            int diameter = camera.scaleObject(player.Size);
+            playerViewPosition = camera.putPositionInCentre(playerViewPosition, diameter);
 
             spriteBatch.Draw(playerTexture,
-                new Rectangle((int)playerViewPosition.X - playerSize / 2, (int)playerViewPosition.Y - playerSize / 2, playerSize, playerSize),
-                Color.Green
+                new Rectangle((int)playerViewPosition.X, (int)playerViewPosition.Y, diameter, diameter),
+                player.Color
                     );
         }
     }

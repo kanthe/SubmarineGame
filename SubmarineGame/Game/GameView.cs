@@ -105,12 +105,26 @@ namespace View
             // System.Collections.Generic.List<EnemyTemplate> enemies = gameSimulation.getMap().getEnemies();
             mapView.drawEnemies(spriteBatch);
 
+            // ENEMIES WEAPONS
+            for (int i = gameSimulation.Map.Enemies.Count - 1; i >= 0; i--)
+            {
+                IEnemy enemy = gameSimulation.Map.Enemies[i];
+
+                if (enemy.TorpedoLauncher != null)
+                {
+                    foreach (Torpedo torpedo in enemy.TorpedoLauncher.Torpedos)
+                    {
+                        torpedoView.DrawTorpedo(torpedo, spriteBatch);
+                    }
+                }
+            }
+
             // EXPLOSIONS AND SMOKE
 
             // eventListener.UpdateExplosions(gameTime, spriteBatch, deltaTime);
             // eventListener.UpdateSmoke(spriteBatch, deltaTime);
 
-            
+
 
             // SHOW MESSAGE
 
