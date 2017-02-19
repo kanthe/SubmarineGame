@@ -66,12 +66,21 @@ namespace Model
         /// </summary>
         public static bool IsInsideRectangle(Vector2 positionOfObject, float diameterOfObject, Vector2 positionOfRectangle, float widthOfRectangle, float heightOfRectangle)
         {
-            bool widthInside = false;
-            bool heightInside = false;
-            widthInside = positionOfObject.X - positionOfRectangle.X < diameterOfObject / 2 + widthOfRectangle && positionOfObject.X - positionOfRectangle.X > diameterOfObject / 2;
-            heightInside = AbsoluteValue(positionOfObject.Y - positionOfRectangle.Y) < diameterOfObject / 2 + heightOfRectangle;
+            bool objectIsInsideX = false;
+            bool objectIsInsideY = false;
 
-            return widthInside && heightInside;
+            if ((positionOfObject.X + diameterOfObject / 2 > positionOfRectangle.X && positionOfObject.X < positionOfRectangle.X) ||
+                (positionOfObject.X - diameterOfObject / 2 < positionOfRectangle.X + widthOfRectangle && positionOfObject.X > positionOfRectangle.X))
+            {
+                objectIsInsideX = true;
+            }
+            if ((positionOfObject.Y + diameterOfObject / 2 > positionOfRectangle.Y - heightOfRectangle && positionOfObject.Y < positionOfRectangle.Y) ||
+                (positionOfObject.Y - diameterOfObject / 2 < positionOfRectangle.Y && positionOfObject.Y > positionOfRectangle.Y))
+            {
+                objectIsInsideY = true;
+            }
+
+            return objectIsInsideX && objectIsInsideY;
         }
         /// <summary>
         /// Returns a position inside a circle

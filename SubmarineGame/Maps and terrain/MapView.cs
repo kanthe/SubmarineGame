@@ -43,23 +43,28 @@ namespace View
 
         public void drawMap(SpriteBatch spriteBatch)
         {
-
+            // GROUND
             for (int i = 0; i < mapModel.Ground.Length; i++)
             {
                 Vector2 groundView = camera.modelPositionToViewPosition(mapModel.Ground[i]);
-                int groundViewX = camera.scaleObject(mapModel.Ground[i].X);
-                int groundViewY = camera.scaleObject(mapModel.Ground[i].Y);
-                spriteBatch.Draw(groundTexture, new Rectangle((int)groundView.X, (int)groundView.Y, 10, (int)groundView.Y), Color.Brown);
+                spriteBatch.Draw(groundTexture, new Rectangle((int)groundView.X, (int)groundView.Y, 5, (int)groundView.Y), Color.Brown);
             }
-            Vector2 endPos = camera.modelPositionToViewPosition(new Vector2(MapL1.MAP_WIDTH, 0));
-            spriteBatch.Draw(groundTexture, new Rectangle((int)endPos.X, (int)endPos.Y, 10, (int)endPos.Y + scale), Color.Brown);
-            Vector2 startPos = camera.modelPositionToViewPosition(new Vector2(0, 0));
-            spriteBatch.Draw(groundTexture, new Rectangle((int)startPos.X, (int)startPos.Y, 10, (int)startPos.Y), Color.Brown);
+            // MOUNTAIN
+            foreach (Mountain mountain in mapModel.Mountains)
+            {
+                for (int i = 0; i < mountain.YPositionsHigh.Length; i++)
+                {
+                    Vector2 mountainView = camera.modelPositionToViewPosition(mountain.LowPositions[i]);
+                    float length = mountain.YPositionsHigh[i] - mountain.LowPositions[i].Y;
+                    int viewHight = camera.scaleObject(length);
+                    spriteBatch.Draw(groundTexture, new Rectangle((int)mountainView.X, (int)mountainView.Y, 20, viewHight), Color.Brown);
+                }
+            }
         }
 
         public void drawEnemies(SpriteBatch spriteBatch)
         {
-            foreach (IEnemy enemy in mapModel.Enemies) {
+            foreach (BaseEnemy enemy in mapModel.Enemies) {
                 enemyView.draw(enemy, spriteBatch);
             }
         }

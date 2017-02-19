@@ -129,7 +129,14 @@ namespace Controller
                 //
                 bool electroButtonPressed = Keyboard.GetState().IsKeyDown(Keys.E) || currentState.IsConnected && currentState.Buttons.A == ButtonState.Pressed;
                 gameSimulation.playerLaunchElectroBeam(electroButtonPressed);
-                
+
+                bool KbuttonPressed = Keyboard.GetState().IsKeyDown(Keys.K);
+
+                if (KbuttonPressed)
+                {
+                    gameSimulation.Player.Color = Color.Green;
+                    gameSimulation.Player.HitPoints = gameSimulation.Player.MaxHitPoints;
+                }
                 // Moving PLAYERS BEAMS. All beams are stored in the BeamWeapon object until deleted (at window boundaries, if it hits an enemy
                 // or outside map boundary.
                 /*

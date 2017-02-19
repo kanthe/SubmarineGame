@@ -17,28 +17,34 @@ namespace Model
     {
         ElectroBeam electroBeam;
         Activator activator;
-        Timer launchTimer = new Timer(0.5f);
-        Timer reloadTimer = new Timer(0.25f);
         
         Color color = Color.Blue;
         float width = 0.01f;
         float length = 0.1f;
         int damage = 30;
+        Timer launchTimer;
+        Timer reloadTimer;
 
         public ElectroBeam ElectroBeam
         {
             get { return electroBeam;  } 
             set { electroBeam = value; }
         }
-
+        public Timer ReloadTimer
+        {
+            get { return reloadTimer; }
+            set { reloadTimer = value; }
+        }
         public Timer LaunchTimer
         {
             get { return launchTimer; }
             set { launchTimer = value; }
         }
 
-        public ElectroLauncher()
+        public ElectroLauncher(float launchTime, float reloadTime)
         {
+            launchTimer = new Timer(launchTime);
+            reloadTimer = new Timer(reloadTime);
             activator = new Activator(launchTimer, reloadTimer);
         }
 

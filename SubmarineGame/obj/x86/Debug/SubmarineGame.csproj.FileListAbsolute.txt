@@ -23,3 +23,28 @@ c:\users\robin\documents\visual studio 2015\Projects\SubmarineGame\SubmarineGame
 c:\users\robin\documents\visual studio 2015\Projects\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 c:\users\robin\documents\visual studio 2015\Projects\SubmarineGame\SubmarineGame\obj\x86\Debug\SubmarineGame.exe
 c:\users\robin\documents\visual studio 2015\Projects\SubmarineGame\SubmarineGame\obj\x86\Debug\SubmarineGame.pdb
+C:\Robin\SubmarineGame\SubmarineGame\obj\x86\Debug\SubmarineGame.exe
+C:\Robin\SubmarineGame\SubmarineGame\obj\x86\Debug\SubmarineGame.pdb
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SubmarineGame.exe
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SubmarineGame.pdb
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.RawInput.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.RawInput.xml
+C:\Robin\SubmarineGame\SubmarineGame\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Robin\SubmarineGame\SubmarineGame\obj\x86\Debug\SubmarineGame.csprojResolveAssemblyReference.cache

@@ -21,16 +21,9 @@ namespace Model
         int HitPoints { get; set; }
         int MaxHitPoints { get; set; }
         int CrashDamage { get; set; }
-        Movement Movement { get; set; }
-        Timer DamageTimer { get; set; }
-        TorpedoLauncher TorpedoLauncher { get; set; }
-
-        void Fire(System.Collections.Generic.List<Torpedo> enemyBullets, float deltaTime);
-        /// <summary>
-        /// ENEMY DAMAGED/DESTROYED
-        /// </summary>
-        void crash();
-        void isHit(int damage);
+        
+        void IsHit(int damage);
+        void Fire(float deltaTime);
     }
 }
 

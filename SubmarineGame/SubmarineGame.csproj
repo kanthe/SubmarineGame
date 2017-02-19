@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enemy\BaseEnemy.cs" />
     <Compile Include="Enemy\EnemyClassOne.cs" />
     <Compile Include="Enemy\EnemyView.cs" />
     <Compile Include="Enemy\IEnemy.cs" />
@@ -59,8 +60,14 @@
     <Compile Include="Game\GameSimulation.cs" />
     <Compile Include="Game\GameView.cs" />
     <Compile Include="Game\MasterController.cs" />
-    <Compile Include="Maps\MapL1.cs" />
-    <Compile Include="Maps\MapView.cs" />
+    <Compile Include="Maps and terrain\BaseMap.cs" />
+    <Compile Include="Topbar\DropBombBar.cs" />
+    <Compile Include="Topbar\ElectroBar.cs" />
+    <Compile Include="Topbar\HpBar.cs" />
+    <Compile Include="Maps and terrain\MapL1.cs" />
+    <Compile Include="Maps and terrain\MapView.cs" />
+    <Compile Include="Maps and terrain\Mountain.cs" />
+    <Compile Include="Topbar\TorpedoBar.cs" />
     <Compile Include="Mathematics\Mathematics.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Player\PlayerView.cs" />

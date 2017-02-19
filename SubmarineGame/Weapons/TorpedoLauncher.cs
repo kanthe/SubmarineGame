@@ -10,12 +10,13 @@
 // Log:2016-06-26 Created the file. Robin Kanthe
 /*******************************************************************************************************/
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace Model
 {
     class TorpedoLauncher
     {
-        System.Collections.Generic.List<Torpedo> torpedos = new System.Collections.Generic.List<Torpedo>();
+        List<Torpedo> torpedos = new List<Torpedo>();
         Activator launchActivator = new Activator();
         float speed = 0.2f;
         Color color = Color.Yellow;
@@ -23,27 +24,18 @@ namespace Model
         int damage = 10;
         Timer timer;
 
-        public TorpedoLauncher(float speed, Color color, float size, int damage)
+        public TorpedoLauncher(float interval)
         {
-            this.speed = speed;
-            this.color = color;
-            this.size = size;
-            this.damage = damage;
-        }
-        public TorpedoLauncher(float speed, Color color, float size, int damage, float interval)
-        {
-            this.speed = speed;
-            this.color = color;
-            this.size = size;
-            this.damage = damage;
             this.timer = new Timer(interval);
         }
 
-        public void LaunchTorpedo(Vector2 position, bool torpedoButtonPressed)
+        public void LaunchTorpedo(Vector2 position, bool torpedoButtonPressed, float deltaTime)
         {
-            if (launchActivator.activeOneTimeStep(torpedoButtonPressed))
+            if (timer.runTimer(deltaTime) &&
+                launchActivator.activeOneTimeStep(torpedoButtonPressed))
             {
                 torpedos.Add(new Torpedo(position, speed, color, size, damage));
+                timer.resetTimer();
             }
         }
 
@@ -54,7 +46,7 @@ namespace Model
 
         #region Properties
 
-        public System.Collections.Generic.List<Torpedo> Torpedos
+        public List<Torpedo> Torpedos
         {
             get { return torpedos; }
             set { torpedos = value; }

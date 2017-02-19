@@ -17,13 +17,13 @@ namespace Model
     {
         Vector2 position;
         float speed = 0.1f;
-        Color color = Color.Black;
+        Color color = Color.Green;
         float size = 0.04f;
         int hitPoints = 100;
-        int maxHitPoints = 1000;
-        TorpedoLauncher torpedoLauncher = new TorpedoLauncher(0.2f, Color.Yellow, 0.01f, 10);
-        DropBombLauncher dropBombLauncher = new DropBombLauncher();
-        ElectroLauncher electroLauncher = new ElectroLauncher();
+        int maxHitPoints = 100;
+        TorpedoLauncher torpedoLauncher = new TorpedoLauncher(1.0f);
+        DropBombLauncher dropBombLauncher = new DropBombLauncher(2.0f);
+        ElectroLauncher electroLauncher = new ElectroLauncher(0.5f, 0.5f);
 
         public Player(Vector2 position)
         {

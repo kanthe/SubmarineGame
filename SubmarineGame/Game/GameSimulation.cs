@@ -25,49 +25,14 @@ namespace Model
         Player player;
         int level;
         MapL1 map;
-        // MapTemplate map; // The model representation of the map.
-
-        // GET / SET METHODS
-
-        public int Level
-        {
-            get { return level; }
-            set { level = value; }
-        }
-
-        public GameState GameState
-        {
-            get { return gameState; }
-            set { gameState = value; }
-        }
-
-        public Movement Movement
-        {
-            get { return movement; }
-            set { movement = value; }
-        }
-
-        public Player Player
-        {
-            get { return player; }
-            set { player = value; }
-        }
-
-        public MapL1 Map
-        {
-            get { return map; }
-            set { map = value; }
-        }
-
-        // Player player; // The model representation of the player.
+        Timer touchGroundTimer = new Timer(1.0f);
 
         public GameSimulation()
         {
             movement = new Movement();
-            // Initial conditions
             level = 1;
-            player = new Player(new Vector2(0.3f, 0.3f)); // The player
-            map = new MapL1(player); // The Map (initially first level)
+            player = new Player(new Vector2(0.3f, 0.3f));
+            map = new MapL1(player);
         }
 
         // UPDATE
@@ -78,19 +43,19 @@ namespace Model
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // PLAYER GRAVITY MOVEMENT
             player.Position = movement.down(player.Position, Movement.GRAVITY / 2, deltaTime);
-            // ENEMIES MOVEMENT
-            for (int i = map.Enemies.Count - 1; i >= 0; i--)
+            // PLAYER TOUCH GROUND
+            didPlayerTouchGround(deltaTime);
+            // PLAYER TOUCH MOUNTAIN
+            foreach (Mountain mountain in Map.Mountains)
             {
-                IEnemy enemy = map.Enemies[i];
-                moveEnemy(enemy);
-
-                if(didEnemyCrash(enemy))
-                {
-                    player.HitPoints -= map.Enemies[i].CrashDamage;
-                    map.Enemies.Remove(enemy);
+                for (int i = 1; i < mountain.YPositionsHigh.Length; i++) {
+                    if (Mathematics.IsInsideRectangle(player.Position, player.Size, mountain.LowPositions[i], 
+                        0.01f, mountain.YPositionsHigh[i] - mountain.LowPositions[i].Y))
+                    {
+                        player.IsHit(10);
+                    }
                 }
             }
-            // ENEMIES CRASH
             // PLAYERS WEAPONS
             foreach (Torpedo torpedo in player.TorpedoLauncher.Torpedos)
             {
@@ -101,15 +66,13 @@ namespace Model
                 dropBomb.Position = movement.forward(dropBomb.Position, dropBomb.Speed, deltaTime);
                 dropBomb.Position = movement.down(dropBomb.Position, Movement.GRAVITY, deltaTime);
             }
-            // WEAPONS HIT ENEMIES 
+            // ENEMIES
             for (int i = map.Enemies.Count - 1; i >= 0; i--)
             {
-                weaponsHitEnemy(map.Enemies[i]);
-            }
-            // ENEMIES WEAPONS
-            for (int i = map.Enemies.Count - 1; i >= 0; i--)
-            {
-                launchAndMoveTorpedos(map.Enemies[i]);
+                BaseEnemy enemy = map.Enemies[i];
+                enemyLaunchAndMoveWeapons(map.Enemies[i]);
+                weaponsHitEnemy(enemy);
+                enemyMove(enemy);
             }
             
             if(player.IsGameOver())
@@ -137,40 +100,55 @@ namespace Model
             player.Position = movement.down(player.Position, player.Speed, deltaTime);
         }
 
-        // ENEMIES MOVE
-
-        public void moveEnemy(IEnemy enemy)
+        public void didPlayerTouchGround(float deltaTime)
         {
-            enemy.Position = movement.backward(enemy.Position, enemy.Speed, deltaTime);
+            touchGroundTimer.runTimer(deltaTime);
+
+            for (int i = 0; i < map.Ground.Length; i++)
+            {
+                if (Mathematics.IsInsideRectangle(player.Position, player.Size, map.Ground[i], 0.01f, map.Ground[i].Y)
+                    && touchGroundTimer.getTime() > touchGroundTimer.getResetTime())
+                {
+                    player.IsHit(10);
+                    touchGroundTimer.resetTimer();
+                    break;
+                }
+            }
         }
 
-        public bool didEnemyCrash(IEnemy enemy)
+        // ENEMY MOVE
+
+        public void enemyMove(BaseEnemy enemy)
         {
-            bool enemyCrash = false;
+            enemy.Position = movement.backward(enemy.Position, enemy.Speed, deltaTime);
 
-            if (Mathematics.IsInsideCircle(player.Position, player.Size, enemy.Position, enemy.Size))
+            if (enemy.Position.X < 0)
             {
-                enemyCrash = true;
+                map.Enemies.Remove(enemy);
             }
-
-            return enemyCrash;
+            else if (Mathematics.IsInsideCircle(player.Position, player.Size, enemy.Position, enemy.Size))
+            {
+                player.HitPoints -= enemy.CrashDamage;
+                map.Enemies.Remove(enemy);
+            }
         }
 
         // WEAPONS
 
         public void playerLaunchTorpedo(bool torpedoButtonPressed)
         {
-            player.TorpedoLauncher.LaunchTorpedo(player.Position, torpedoButtonPressed);
+            player.TorpedoLauncher.LaunchTorpedo(player.Position, torpedoButtonPressed, deltaTime);
         }
         public void playerLaunchDropBomb(bool dropBombButtonPressed)
         {
-            player.DropBombLauncher.LaunchDropBomb(player.Position, player.Speed / 3, dropBombButtonPressed);
+            player.DropBombLauncher.LaunchDropBomb(player.Position, player.Speed / 3, dropBombButtonPressed, deltaTime);
         }
         public void playerLaunchElectroBeam(bool electroButtonPressed)
         {
             player.ElectroLauncher.LaunchElectroBeam(player.Position + new Vector2(player.Size / 2, 0), electroButtonPressed, deltaTime);
         }
-        public void weaponsHitEnemy(IEnemy enemy)
+
+        public void weaponsHitEnemy(BaseEnemy enemy)
         {
             for (int i = player.TorpedoLauncher.Torpedos.Count - 1; i >= 0; i--)
             {
@@ -178,7 +156,7 @@ namespace Model
 
                 if (Mathematics.IsInsideCircle(torpedo.Position, torpedo.Size, enemy.Position, enemy.Size)) 
                 {
-                    enemy.isHit(torpedo.Damage);
+                    enemy.IsHit(torpedo.Damage);
                     player.TorpedoLauncher.Torpedos.Remove(torpedo);
                 }
             }
@@ -188,7 +166,7 @@ namespace Model
 
                 if (Mathematics.IsInsideCircle(dropBomb.Position, dropBomb.Size, enemy.Position, enemy.Size))
                 {
-                    enemy.isHit(dropBomb.Damage);
+                    enemy.IsHit(dropBomb.Damage);
                     player.DropBombLauncher.DropBombs.Remove(dropBomb);
                 }
             }
@@ -196,12 +174,12 @@ namespace Model
 
             if (eBeam != null && Mathematics.IsInsideRectangle(enemy.Position, enemy.Size, eBeam.Position, eBeam.Width, eBeam.Height))
             {
-                bool reachedResetTime = enemy.DamageTimer.runTimer(deltaTime);
+                bool reachedResetTime = enemy.ElectroDamageTimer.runTimer(deltaTime);
 
                 if(reachedResetTime)
                 {
-                    enemy.isHit(eBeam.Damage);
-                    enemy.DamageTimer.resetTimer();
+                    enemy.IsHit(eBeam.Damage);
+                    enemy.ElectroDamageTimer.resetTimer();
                 }
             }
 
@@ -212,27 +190,15 @@ namespace Model
             eBeam = null;
         }
 
-        public void launchAndMoveTorpedos(IEnemy enemy)
+        public void enemyLaunchAndMoveWeapons(BaseEnemy enemy)
         {
-            if (enemy.TorpedoLauncher != null)
+            enemy.Fire(deltaTime);
+            enemy.MoveWeapons(deltaTime, movement);
+            int damage = enemy.DidWeaponHitPlayer(player.Position, player.Size);
+
+            if(damage > 0)
             {
-                if (enemy.TorpedoLauncher.Timer.runTimer(deltaTime))
-                {
-                    enemy.TorpedoLauncher.LaunchTorpedo(enemy.Position);
-
-                    enemy.TorpedoLauncher.Timer.resetTimer();
-                }
-                for (int i = enemy.TorpedoLauncher.Torpedos.Count - 1; i >= 0; i--)
-                {
-                    Torpedo torpedo = enemy.TorpedoLauncher.Torpedos[i];
-                    torpedo.Position = movement.backward(torpedo.Position, torpedo.Speed, deltaTime);
-
-                    if(weaponHitPlayer(torpedo.Position, torpedo.Size))
-                    {
-                        player.IsHit(torpedo.Damage);
-                        enemy.TorpedoLauncher.Torpedos.Remove(torpedo);
-                    }
-                }
+                player.IsHit(damage);
             }
         }
 
@@ -289,6 +255,38 @@ namespace Model
             }
             */
         }
+
+        #region Properties
+        public int Level
+        {
+            get { return level; }
+            set { level = value; }
+        }
+
+        public GameState GameState
+        {
+            get { return gameState; }
+            set { gameState = value; }
+        }
+
+        public Movement Movement
+        {
+            get { return movement; }
+            set { movement = value; }
+        }
+
+        public Player Player
+        {
+            get { return player; }
+            set { player = value; }
+        }
+
+        public MapL1 Map
+        {
+            get { return map; }
+            set { map = value; }
+        } 
+        #endregion
     }
 }
 

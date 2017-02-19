@@ -108,7 +108,7 @@ namespace View
             // ENEMIES WEAPONS
             for (int i = gameSimulation.Map.Enemies.Count - 1; i >= 0; i--)
             {
-                IEnemy enemy = gameSimulation.Map.Enemies[i];
+                BaseEnemy enemy = gameSimulation.Map.Enemies[i];
 
                 if (enemy.TorpedoLauncher != null)
                 {

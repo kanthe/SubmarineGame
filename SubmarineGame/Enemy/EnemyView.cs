@@ -24,7 +24,7 @@ namespace View
             enemyTexture.SetData(new[] { Color.White });
         }
 
-        public void draw(IEnemy enemy, SpriteBatch spriteBatch) 
+        public void draw(BaseEnemy enemy, SpriteBatch spriteBatch) 
         {
             Vector2 enemyViewPosition = camera.modelPositionToViewPosition(enemy.Position);
             int diameter = camera.scaleObject(enemy.Size);

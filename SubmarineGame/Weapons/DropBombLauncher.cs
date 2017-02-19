@@ -10,19 +10,21 @@
 // Log:2016-06-26 Created the file. Robin Kanthe
 /*******************************************************************************************************/
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace Model
 {
     class DropBombLauncher
     {
-        System.Collections.Generic.List<DropBomb> dropBombs = new System.Collections.Generic.List<DropBomb>();
+        List<DropBomb> dropBombs = new List<DropBomb>();
         Activator launchActivator = new Activator();
         
         Color color = Color.Red;
         float size = 0.02f;
         int damage = 20;
+        Timer timer;
 
-        public System.Collections.Generic.List<DropBomb> DropBombs
+        public List<DropBomb> DropBombs
         {
             get { return dropBombs; }
             set { dropBombs = value; }
@@ -46,16 +48,18 @@ namespace Model
             set { color = value; }
         }
 
-        public DropBombLauncher()
+        public DropBombLauncher(float interval)
         {
-            
+            timer = new Timer(interval);
         }
 
-        public void LaunchDropBomb(Vector2 position, float speed, bool dropBombButtonPressed)
+        public void LaunchDropBomb(Vector2 position, float speed, bool dropBombButtonPressed, float deltaTime)
         {
-            if (launchActivator.activeOneTimeStep(dropBombButtonPressed))
+            if (timer.runTimer(deltaTime) &&
+                launchActivator.activeOneTimeStep(dropBombButtonPressed))
             {
                 dropBombs.Add(new DropBomb(position, speed, color, size, damage));
+                timer.resetTimer();
             }
         }
     }
